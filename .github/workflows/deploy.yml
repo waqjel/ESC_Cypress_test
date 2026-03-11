@@ -1,0 +1,53 @@
+name: Test and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # NYTT: Detta jobb kör testerna först
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          # Eftersom GitHub Pages serverar statiska filer kan vi använda 
+          # en enkel inbyggd server för att köra testerna under bygget
+          start: npx servor . 5500 --browse false
+          wait-on: 'http://localhost:5500'
+
+  # Ditt befintliga deploy-jobb, nu med "needs: test"
+  deploy:
+    needs: test # Detta gör att deploy bara körs om testerna passerar!
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
