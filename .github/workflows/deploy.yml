@@ -24,10 +24,11 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          # Eftersom GitHub Pages serverar statiska filer kan vi använda 
-          # en enkel inbyggd server för att köra testerna under bygget
-          start: npx servor . 5500 --browse false
+          # Vi använder http-server istället, den är enklare att konfigurera i GitHub Actions
+          start: npx http-server . -p 5500
           wait-on: 'http://localhost:5500'
+          # Vi lägger till browser: chrome för stabilitet i molnet
+          browser: chrome
 
   # Ditt befintliga deploy-jobb, nu med "needs: test"
   deploy:
