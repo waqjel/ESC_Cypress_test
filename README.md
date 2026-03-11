@@ -1,7 +1,3 @@
-# Link to the project documentation
-https://docs.google.com/document/d/1opcmyHKRjd8NceqJEODWtD-pMucknHeoLLqPXXnXShU/edit?usp=sharing
-
-
 ## Commands to execute for Vite and Cypress-Test
 
 ### Bundle pages with Vite
@@ -12,4 +8,4 @@ https://docs.google.com/document/d/1opcmyHKRjd8NceqJEODWtD-pMucknHeoLLqPXXnXShU/
 
 ### Cypress-Test
 * npm install cypress --save-dev
-* run cypress:open
+* npx cypress open
