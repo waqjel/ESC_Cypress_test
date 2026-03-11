@@ -38,13 +38,7 @@ describe('E2E-test för ESC Hacker Escape Rooms - Fixad version', () => {
     // Vi skriver in något som garanterat inte finns
     cy.get('input[type="text"]').type('XYZ123ABC_FinnsEj', { force: true }); 
     
-    // Alternativ A: Kontrollera att inga utmanings-kort visas
-    // Vi antar att dina kort har klassen .challenge-item (ändra om du har annat namn)
     cy.get('.challenge-item').should('not.exist');
-
-    // Alternativ B: Om du vill att testet ska gå igenom genom att lägga till ett meddelande:
-    // Du kan lägga till <p id="no-result">No matching challenges</p> i din HTML när listan är tom.
-    // Då skulle testet se ut så här:
     // cy.get('#no-result').should('be.visible').and('contain', 'No matching');
   });
 });
